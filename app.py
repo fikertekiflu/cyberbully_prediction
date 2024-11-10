@@ -53,14 +53,15 @@ def predict():
     prediction = model.predict(vectorized_text)[0]
 
     # Generate warning message based on prediction
-    if prediction == 'cyberbullying':
-        warning_message = "This message contains bullying language and may harm the recipient. Please be cautious."
-    elif prediction == 'discouraging':
-        warning_message = "This message may be discouraging. Consider using more supportive language."
+    if prediction == "not_bullying":
+        return jsonify({"prediction": "This is not bullying."})
     else:
-        warning_message = "No harmful content detected, but always aim for respectful communication."
-
-    return jsonify({"prediction": prediction, "warning": warning_message})
+        if prediction == "gender":
+            return jsonify({"prediction": "This is gender-based bullying."})
+        elif prediction == "ethnicity":
+            return jsonify({"prediction": "This is ethnicity-based bullying."})
+        else:
+            return jsonify({"prediction": "This is bullying of message."})
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000)
